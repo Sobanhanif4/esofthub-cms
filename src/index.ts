@@ -7,7 +7,7 @@ export default {
    *
    * This gives you an opportunity to extend code.
    */
-  register(/* { strapi }: { strapi: Core.Strapi } */) {},
+  register(/* { strapi }: { strapi: Core.Strapi } */) { },
 
   /**
    * An asynchronous bootstrap function that runs before
@@ -16,5 +16,22 @@ export default {
    * This gives you an opportunity to set up your data model,
    * run jobs, or perform some special logic.
    */
-  bootstrap(/* { strapi }: { strapi: Core.Strapi } */) {},
+  async bootstrap({ strapi }) {
+    const categories = ['Strategic Vision', 'Engineering', 'Impact'];
+
+    for (const categoryName of categories) {
+      const existingCategory = await strapi.documents('api::category.category').findMany({
+        filters: { name: categoryName },
+      });
+
+      if (existingCategory.length === 0) {
+        await strapi.documents('api::category.category').create({
+          data: {
+            name: categoryName,
+          },
+        });
+        strapi.log.info(`Created category: ${categoryName}`);
+      }
+    }
+  },
 };

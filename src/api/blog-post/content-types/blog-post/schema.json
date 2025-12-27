@@ -33,6 +33,17 @@
     },
     "excerpt": {
       "type": "text"
+    },
+    "viewCount": {
+      "type": "integer",
+      "default": 0,
+      "required": false
+    },
+    "category": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::category.category",
+      "inversedBy": "blog_posts"
     }
   }
 }
