@@ -17,6 +17,8 @@ export default {
    * run jobs, or perform some special logic.
    */
   async bootstrap({ strapi }) {
+    // Temporarily disabled to prevent crash: Cannot read properties of undefined (reading 'attributes')
+    /*
     const categories = ['Strategic Vision', 'Engineering', 'Impact'];
 
     for (const categoryName of categories) {
@@ -33,5 +35,6 @@ export default {
         strapi.log.info(`Created category: ${categoryName}`);
       }
     }
+    */
   },
 };
