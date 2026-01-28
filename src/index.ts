@@ -51,6 +51,21 @@ export default {
       strapi.log.error('Failed to set public permissions automatically:', err);
     }
 
+    // 2. DATABASE KEEP-ALIVE: Prevents PostgreSQL connection pool from going idle
+    const PING_INTERVAL = 5 * 60 * 1000; // 5 minutes
+
+    setInterval(async () => {
+      try {
+        // Simple query to keep connection alive
+        await strapi.db.connection.raw('SELECT 1');
+        strapi.log.info('Database keep-alive ping successful');
+      } catch (error) {
+        strapi.log.error('Database keep-alive ping failed:', error.message);
+      }
+    }, PING_INTERVAL);
+
+    strapi.log.info('Database keep-alive service started (ping every 5 minutes)');
+
     // Temporarily disabled to prevent crash: Cannot read properties of undefined (reading 'attributes')
     /*
     const categories = ['Strategic Vision', 'Engineering', 'Impact'];
